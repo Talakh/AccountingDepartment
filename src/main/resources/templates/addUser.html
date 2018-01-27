@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
+    <title th:if="${!edit}">Реєстрація співробітника</title>
+    <title th:if="${edit}">Редагування співробітника</title>
+
+    <link href="/css/material_icons.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+    <link href="/css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+    <link href="/css/style.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+</head>
+<body>
+<nav th:replace="elements/header :: header"></nav>
+<br>
+<div class="container">
+    <div class="row">
+        <form enctype="multipart/form-data" action="#" th:action="@{/admin/saveUser}" th:object="${user}" method="post"
+              class="col s12">
+            <input type="hidden" th:field="*{id}">
+            <input name="edit" th:value="${edit}" type="hidden">
+            <input th:field="*{enabled}" th:value="false" type="hidden">
+            <input th:field="*{image}" th:value="'/images/co-worker.png'" type="hidden">
+            <div id="authors_block">
+                <div class=" author row">
+                    <div class="input-field col s4">
+                        <input th:field="*{firstName}" placeholder="Ім'я" id="firstName" type="text" required
+                               class="validate">
+                        <label for="firstName">Співробітник</label>
+                    </div>
+                    <div class="input-field col s4">
+                        <input th:field="*{lastName}" id="lastName" type="text" class="validate" required>
+                        <label for="lastName">Прізвище</label>
+                    </div>
+                    <div class="input-field col s4">
+                        <input th:field="*{middleName}" id="middleName" type="text" class="validate" required>
+                        <label for="middleName">По-батькові</label>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s6 lighten-4">
+                    <input th:field="*{email}" id="email" type="email" class="validate" required>
+                    <label for="email">Email</label>
+                </div>
+                <div class="input-field col s6 lighten-4">
+                    <input th:field="*{password}" id="password" type="password" class="validate" required>
+                    <label for="password">Password</label>
+                </div>
+                <div class="input-field col s6 lighten-4">
+                    <select th:field="*{department}" required>
+                        <option value="" selected hidden >Відділ</option>
+                        <option th:each="department:${departments}"
+                                th:value="${department.id}" th:text="${department.name}"></option>
+                    </select>
+                </div>
+                <div class="input-field col s6 lighten-4">
+                    <select th:field="*{position}" required>
+                        <option value="" selected hidden >Посада</option>
+                        <option th:each="position:${positions}"
+                                th:value="${position.id}" th:text="${position.name}"></option>
+                    </select>
+                </div>
+                <div class="input-field col s6 lighten-4">
+                    <select th:field="*{role}" required>
+                        <option value="" selected hidden >Роль</option>
+                        <option value="ADMIN">ADMIN</option>
+                        <option value="USER">USER</option>
+                    </select>
+                </div>
+            </div>
+            <br><br>
+            <br>
+            <div th:switch="${edit}">
+                <button th:case="false" class="btn waves-effect waves-light indigo " type="submit" name="action">Створити
+                    співробітника
+                    <i class="material-icons right">send</i>
+                </button>
+                <button th:case="true" class="btn waves-effect waves-light indigo " type="submit" name="action">Зберегти зміни
+                    <i class="material-icons right">send</i>
+                </button>
+            </div>
+        </form>
+    </div>
+    <br><br>
+
+    <div class="section">
+
+    </div>
+</div>
+
+
+<!--  Scripts-->
+
+
+<script type="text/javascript" th:inline="javascript" th:src="@{/js/jquery-2.1.1.js}"></script>
+<script type="text/javascript" th:inline="javascript" th:src="@{/js/materialize.js}"></script>
+<script type="text/javascript" th:inline="javascript" th:src="@{/js/init.js}"></script>
+<script type="text/javascript" th:inline="javascript" th:src="@{/js/main.js}"></script>
+<script>
+
+    $(document).ready()
+    {
+        $('select').material_select();
+        $('.datepicker').pickadate({
+            selectMonths: true, // Creates a dropdown to control month
+            selectYears: 15, // Creates a dropdown of 15 years to control year
+            format: 'dd/mm/yyyy'
+        });
+    }
+</script>
+</body>
+</html>

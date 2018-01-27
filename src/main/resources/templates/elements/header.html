@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
+    <title>Облік відряджень</title>
+
+    <!-- CSS  -->
+    <link th:href="@{/css/materialize.css}" type="text/css" rel="stylesheet" media="screen,projection"/>
+    <link th:href="@{/css/style.css}" type="text/css" rel="stylesheet" media="screen,projection"/>
+    <link th:href="@{/js/main.js}" type="text/css" rel="stylesheet" media="screen,projection"/>
+</head>
+<body>
+<nav th:fragment="header" class="#303f9f indigo  darken-2" role="navigation">
+    <div style="position:relative;" class="nav-wrapper container">
+        <a id="logo-container" href="/" class="brand-logo" style="position: relative; bottom: 10px;">
+            <div>Облік відряджень</div>
+        </a>
+        <ul class="nav">
+            <li><a href="#" sec:authorize="hasRole('ROLE_ADMIN')">Адміністратор</a>
+                <ul class="subs" style="z-index: 1;">
+                    <li><a href="/admin/users">Співробітники</a></li>
+                    <li><a href="/admin/addUser">Рєстрація</a></li>
+                    <li><a href="/admin/travelAllowances">Відрядження</a></li>
+                    <li><a href="/admin/prepaymentReports">Авансові звіти</a></li>
+                    <li><a href="/admin/statistic">Статистика</a></li>
+                </ul>
+            </li>
+            <li><a th:href="'/user/'+ ${currentUserId}" sec:authorize="isAuthenticated()" class="glyphicon-user">Кабінет</a></li>
+            <li><a href="/login" sec:authorize="isAnonymous()">Увійти</a></li>
+            <li><a href="/logout" sec:authorize="isAuthenticated()">Вийти</a></li>
+        </ul>
+        <div style="clear:both"></div>
+    </div>
+</nav>
+<br>

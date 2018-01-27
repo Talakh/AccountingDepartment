@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
+    <title>Посвідчення про відрядження</title>
+
+    <link th:href="@{/css/material_icons.css}" type="text/css" rel="stylesheet" media="screen,projection"/>
+    <link th:href="@{/css/materialize.css}" type="text/css" rel="stylesheet" media="screen,projection"/>
+    <link th:href="@{/css/style.css}" type="text/css" rel="stylesheet" media="screen,projection"/>
+</head>
+<body>
+<nav th:replace="elements/header :: header"></nav>
+<br>
+<div class="container">
+    <div class="row">
+        <form action="#" th:action="@{/admin/saveTravelAllowance}" th:object="${travelAllowance}" method="post"
+              class="col s12">
+            <input type="hidden" th:field="*{id}">
+            <input type="hidden" th:field="*{user}">
+            <div id="authors_block">
+                <div class="author row">
+                    <div class="input-field col s4">
+                        <input th:field="*{dateOfIssue}" placeholder="Дата видачі" id="dateOfIssue" type="date"
+                               class="datepicker">
+                        <label for="dateOfIssue">Дата видачі</label>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s6 lighten-4">
+                    <select th:field="*{city}" required>
+                        <option th:each="city:${cities}"
+                                th:value="${city.id}" th:text="${city.name}"></option>
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s4">
+                    <input th:field="*{businessTripStartDate}" placeholder="Дата початку" id="businessTripStartDate"
+                           type="date"
+                           class="datepicker">
+                    <label for="businessTripStartDate">Дата початку</label>
+                </div>
+                <div class="input-field col s4">
+                    <input th:field="*{businessTripEndDate}" placeholder="Дата закінчення" id="businessTripEndDate"
+                           type="date"
+                           class="datepicker">
+                    <label for="businessTripEndDate">Дата закінчення</label>
+                </div>
+            </div>
+            <br><br>
+            <br>
+            <div th:switch="${editTravelAllowance}">
+                <button th:case="false" class="btn waves-effect waves-light indigo " type="submit" name="action">Створити
+                    посвідчення
+                    <i class="material-icons right">send</i>
+                </button>
+                <button th:case="true" class="btn waves-effect waves-light indigo " type="submit" name="action">Зберегти зміни
+                    <i class="material-icons right">send</i>
+                </button>
+            </div>
+        </form>
+    </div>
+    <br><br>
+    <div class="section">
+    </div>
+</div>
+<!--  Scripts-->
+<script type="text/javascript" th:inline="javascript" th:src="@{/js/jquery-2.1.1.js}"></script>
+<script type="text/javascript" th:inline="javascript" th:src="@{/js/materialize.js}"></script>
+<script type="text/javascript" th:inline="javascript" th:src="@{/js/init.js}"></script>
+<script type="text/javascript" th:inline="javascript" th:src="@{/js/main.js}"></script>
+<script>
+
+    $(document).ready()
+    {
+        $('select').material_select();
+        $('.datepicker').pickadate({
+            selectMonths: true, // Creates a dropdown to control month
+            selectYears: 15, // Creates a dropdown of 15 years to control year
+            format: 'dd-mm-yyyy'
+        });
+    }
+</script>
+</body>
+</html>

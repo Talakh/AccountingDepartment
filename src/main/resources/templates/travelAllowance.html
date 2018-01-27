@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>Відрядження</title>
+
+    <link th:href="@{/css/material_icons.css}" type="text/css" rel="stylesheet" media="screen,projection"/>
+    <link th:href="@{/css/materialize.css}" type="text/css" rel="stylesheet" media="screen,projection"/>
+    <link th:href="@{/css/style.css}" type="text/css" rel="stylesheet" media="screen,projection"/>
+    <style>
+        td > a.btn {
+            padding: 0 1rem;
+        }
+    </style>
+</head>
+<body>
+<nav th:replace="elements/header::header"></nav>
+<div style="margin: 0 300px;">
+    <div style="background-color: white;">
+        <div style="display: inline-block; float: left; margin-right: 30px; height: 300px;">
+            <img src="/images/emblem.png" alt="" style="margin-top: 100px;">
+        </div>
+        <div style="margin-left: 150px; margin-top: 50px;">
+            <p style="text-align: center; font-size: 1.5em; font-weight: bold; margin-top: 50px;">ПОСВІДЧЕННЯ ПРО
+                ВІДРЯДЖЕННЯ</p>
+            <p th:text="'Видано: '+${travelAllowance.user.lastName}+ ' ' + ${travelAllowance.user.firstName} +' '+ ${travelAllowance.user.middleName}"></p>
+            <p th:text="'Відділ: ' + ${travelAllowance.user.department.name}"></p>
+            <p th:text="'Посада: ' + ${travelAllowance.user.position.name}"></p>
+            <p th:text="'Відрядженому до: ' + ${travelAllowance.city.name}"></p>
+            <p th:text="'Строк відрядження з ' + ${travelAllowance.businessTripStartDate} + ' по ' + ${travelAllowance.businessTripEndDate}"></p>
+            <hr>
+            <p th:text="'Дата '+ ${travelAllowance.dateOfIssue}"
+               style="display: inline-block; float: left;"></p>
+            <p style="margin-left: 400px; margin-top: 20px;">Підпис ____________</p>
+            <br>
+        </div>
+    </div>
+    <div style="margin-left: 40%;"  sec:authorize="hasRole('USER')">
+        <a th:href="'/user/printTravelAllowance/' + ${travelAllowance.id}"
+           class="btn waves-effect indigo">Зберегти</a>
+        </div>
+    <div style="margin-left: 20%;"  sec:authorize="hasRole('ADMIN')">
+        <a th:href="'/user/printTravelAllowance/' + ${travelAllowance.id}"
+           class="btn waves-effect indigo">Зберегти</a>
+        <a th:href="'/admin/editTravelAllowance/' + ${travelAllowance.id}"
+           class="btn waves-effect indigo">Редагувати</a>
+        <a th:href="'/admin/deleteTravelAllowance/' + ${travelAllowance.id}"
+           class="btn waves-effect indigo">Видалити</a>
+    </div>
+</div>
+<div style="margin: 0 300px;">
+    <div style="background-color: white;">
+        <div style="margin-left: 50px; margin-top: 50px;">
+            <p style="text-align: center; font-size: 1.5em; font-weight: bold; margin-top: 50px;">ВИДАТКОВИЙ КАСОВИЙ
+                ОРДЕР</p>
+            <p th:text="'Видати: '+${travelAllowance.user.lastName}+ ' ' + ${travelAllowance.user.firstName} +' '+ ${travelAllowance.user.middleName}"></p>
+            <p th:text="'Сума: ' + ${cashOrder.sum} + ' грн.'"></p>
+            <hr style="margin-right: 50px;"/>
+            <p th:text="'Дата '+ ${cashOrder.dateReceiptOfMoney}"
+               style="display: inline-block; float: left;"></p>
+            <p style="margin-left: 400px; margin-top: 20px;">Головний бухгалер ____________</p>
+            <p style="margin-left: 400px; margin-top: 20px;">Підпис одержувача ____________</p>
+            <br>
+        </div>
+    </div>
+    <div style="margin-left: 40%;">
+        <a th:href="'/user/printCashOrder/' + ${cashOrder.id}"
+           class="btn waves-effect indigo">Зберегти</a>
+    </div>
+</div>
+<div style="margin: 0 300px;" th:switch="${isPrepaymentReportExist}">
+    <a th:case="false"
+       th:href="'/user/addPrepaymentReport?travelAllowanceId=' + ${travelAllowance.id}"
+       class="btn waves-effect indigo" style="margin: 20px 20px 50px 33%; display: inline-block;">Додати авансовий звіт</a>
+    <div th:case="true">
+        <div style="background-color: white;">
+            <div style="margin-left: 50px; margin-top: 50px;">
+                <p style="text-align: center; font-size: 1.5em; font-weight: bold; margin-top: 50px;">ВІДОМІСТЬ
+                    ЗАТРАЧЕНИХ
+                    КОШТІВ</p>
+                <p th:text="'ПІП відрядженого: '+${travelAllowance.user.lastName}+ ' ' + ${travelAllowance.user.firstName} +' '+ ${travelAllowance.user.middleName}"></p>
+                <p th:text="'Витрачена сума за проїзд: ' + ${prepaymentReport.fare} + ' грн.'"></p>
+                <p th:text="'Резервування місць: ' + ${prepaymentReport.seatReservation} + ' грн.'"></p>
+                <p th:text="'Проживання в готелі: ' + ${prepaymentReport.hotelAccommodation}+ ' грн.'"></p>
+                <p th:text="'Телефонні переговори: ' + ${prepaymentReport.telephoneConversations}+ ' грн.'"></p>
+                <p th:text="'Сума суточних: ' + ${prepaymentReport.sumPerDiems}+ ' грн.'"></p>
+                <p th:text="'Всього різниця: ' + ${sum} + ' - '+${cashOrder.sum} + ' = '+ ${sum - cashOrder.sum}+ ' грн.'"></p>
+                <hr style="margin-right: 50px;">
+                <p th:text="'Дата: ' + ${prepaymentReport.preparationDate}"
+                   style="display: inline-block; float: left;"></p>
+                <p style="margin-left: 400px; margin-top: 20px;">Підпис відрядженого ____________</p>
+                <br>
+            </div>
+        </div>
+        <div style="margin-left: 20%; margin-bottom: 20px;">
+            <a th:href="'/user/printPrepaymentReport/' + ${prepaymentReport.id}"
+               class="btn waves-effect indigo">Зберегти</a>
+            <a th:href="'/user/editPrepaymentReport/' + ${prepaymentReport.id}"
+               class="btn waves-effect indigo">Редагувати</a>
+            <a th:href="'/user/deletePrepaymentReport/' + ${prepaymentReport.id}"
+               class="btn waves-effect indigo">Видалити</a>
+        </div>
+    </div>
+</div>
+<footer th:replace="elements/footer :: footer"></footer>
+</body>
+</html>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <style>
+        table {
+            width: 100%;
+        }
+        tbody tr {
+            padding-bottom: 20px;
+        }
+
+    </style>
+</head>
+<body>
+<p style="text-align: center; font-size: 1.5em; font-weight: bold; margin-top: 50px;">СПИСОК ВІДРЯДЖЕНЬ</p>
+<table class="table table-striped table-dark" style="margin-top: 25px;">
+    <thead>
+    <tr>
+        <th scope="col">№</th>
+        <th scope="col">ПІП</th>
+        <th scope="col">Дата видачі</th>
+        <th scope="col">Дата початку</th>
+        <th scope="col">Дата закінчення</th>
+        <th scope="col">Місце призначення</th>
+    </tr>
+    </thead>
+    <tbody th:each="travelAllowance : ${travelAllowances}">
+    <tr>
+        <th scope="row" th:text="${travelAllowance.id}"></th>
+        <td th:text="${travelAllowance.user.lastName}+ ' ' + ${travelAllowance.user.firstName} +' '+ ${travelAllowance.user.middleName}"></td>
+        <td th:text="${travelAllowance.dateOfIssue}"></td>
+        <td th:text="${travelAllowance.businessTripStartDate}"></td>
+        <td th:text="${travelAllowance.businessTripEndDate}"></td>
+        <td th:text="${travelAllowance.city.name}"></td>
+    </tr>
+    </tbody>
+</table>
+<script type="text/javascript">
+    <!--
+    window.print();
+    //-->
+</script>
+</body>
+</html>

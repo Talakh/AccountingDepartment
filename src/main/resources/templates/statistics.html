@@ -1,0 +1,56 @@
+<!DOCTYPE html >
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Статистика</title>
+    <script type="text/javascript" th:inline="javascript">
+        window.onload = function () {
+            /*<![CDATA[*/
+            var names = [[${cityName}]];
+            var counts = [[${count}]];
+            var map = [[${map}]];
+
+            var i;
+            var data = [];
+            for (i = 0; i < names.length; i++) {
+                data.push({
+                    y: counts[i], label: names[i]
+                });
+            }
+            var chart = new CanvasJS.Chart("chartContainer", {
+                animationEnabled: true,
+
+                title: {
+                    text: "Статистика відряджень по містам"
+                },
+                axisX: {
+                    interval: 1
+                },
+                axisY2: {
+                    interlacedColor: "rgba(1,77,101,.2)",
+                    gridColor: "rgba(1,77,101,.1)",
+                    title: "Кількість відряджень"
+                },
+                data: [{
+                    type: "bar",
+                    name: "companies",
+                    axisYType: "secondary",
+                    color: "#014D65",
+                    dataPoints: data
+                }]
+            });
+            chart.render();
+            /*]]>*/
+        }
+    </script>
+    <link th:href="@{/css/material_icons.css}" type="text/css" rel="stylesheet" media="screen,projection"/>
+    <link th:href="@{/css/materialize.css}" type="text/css" rel="stylesheet" media="screen,projection"/>
+    <link th:href="@{/css/style.css}" type="text/css" rel="stylesheet" media="screen,projection"/>
+</head>
+<body>
+<nav th:replace="elements/header::header"></nav>
+<div id="chartContainer" style="height: 370px; width: 100%;"></div>
+<footer th:replace="elements/footer :: footer"></footer>
+<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+</body>
+</html>

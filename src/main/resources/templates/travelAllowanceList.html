@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>Список відряджень</title>
+    <link th:href="@{/css/material_icons.css}" type="text/css" rel="stylesheet" media="screen,projection"/>
+    <link th:href="@{/css/materialize.css}" type="text/css" rel="stylesheet" media="screen,projection"/>
+    <link th:href="@{/css/style.css}" type="text/css" rel="stylesheet" media="screen,projection"/>
+    <script>
+        function filter() {
+            var department = document.getElementById("department").value;
+            var position = document.getElementById("position").value;
+            var date = document.getElementById("dateOfIssueFilter").value;
+            var andState = false;
+            document.getElementById("filter").href = "/admin/travelAllowances";
+            if (department !== "") {
+                document.getElementById("filter").href += "?department=" + department;
+                andState = true;
+            }
+            if (position !== "") {
+                if (andState) {
+                    document.getElementById("filter").href += "&position=" + position;
+                } else {
+                    document.getElementById("filter").href += "?position=" + position;
+                    andState = true;
+                }
+            }
+            if (date !== "") {
+                if (andState) {
+                    document.getElementById("filter").href += "&date=" + date;
+                } else {
+                    document.getElementById("filter").href += "?date=" + date;
+                }
+            }
+        }
+        function save() {
+            var location = document.location.href;
+            document.getElementById("save").href = location.split("?")[0] +"/save?" + location.split("?")[1];
+        }
+    </script>
+</head>
+<body>
+<nav th:replace="elements/header::header"></nav>
+<div class="row" style="margin-left: 125px;">
+    <div class="input-field col s3 lighten-4">
+        <select id="department">
+            <option value="" selected hidden>Відділ</option>
+            <option th:each="department:${departments}"
+                    th:value="${department.id}" th:text="${department.name}"></option>
+        </select>
+    </div>
+    <div class="input-field col s3 lighten-4">
+        <select id="position">
+            <option value="" selected hidden>Посада</option>
+            <option th:each="position:${positions}"
+                    th:value="${position.id}" th:text="${position.name}"></option>
+        </select>
+    </div>
+    <input placeholder="Місяць фільтрації" id="dateOfIssueFilter"
+           type="date"
+           class="validate autocomplete datepicker col s2"
+            style="position: relative; top: 16px;">
+    <a href="#" id="filter" class="btn waves-effect indigo col s1"
+       style="position: relative; top: 15px;left: 35px; z-index: 0;"
+       onclick="filter()">Фільтр</a>
+    <a href="#" id="save" class="btn waves-effect indigo col s1"
+       style="position: relative; top: 15px;left: 50px; z-index: 0;"
+       onclick="save()">Зберегти</a>
+</div>
+<table class="table table-striped table-dark">
+    <thead>
+    <tr>
+        <th scope="col">№</th>
+        <th scope="col">ПІП</th>
+        <th scope="col">Дата видачі</th>
+        <th scope="col">Дата початку</th>
+        <th scope="col">Дата закінчення</th>
+        <th scope="col">Місце призначення</th>
+    </tr>
+    </thead>
+    <tbody th:each="travelAllowance : ${travelAllowances}">
+    <tr>
+        <th scope="row" th:text="${travelAllowance.id}"></th>
+        <td th:text="${travelAllowance.user.lastName}+ ' ' + ${travelAllowance.user.firstName} +' '+ ${travelAllowance.user.middleName}"></td>
+        <td th:text="${travelAllowance.dateOfIssue}"></td>
+        <td th:text="${travelAllowance.businessTripStartDate}"></td>
+        <td th:text="${travelAllowance.businessTripEndDate}"></td>
+        <td th:text="${travelAllowance.city.name}"></td>
+        <td><a th:href="'/user/travelAllowance/' + ${travelAllowance.id}" class="btn waves-effect indigo">Перейти</a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<footer th:replace="elements/footer :: footer"></footer>
+<script type="text/javascript" th:inline="javascript" th:src="@{/js/jquery-2.1.1.js}"></script>
+<script type="text/javascript" th:inline="javascript" th:src="@{/js/materialize.js}"></script>
+<script type="text/javascript" th:inline="javascript" th:src="@{/js/init.js}"></script>
+<script type="text/javascript" th:inline="javascript" th:src="@{/js/main.js}"></script>
+<script>
+    $(document).ready()
+    {
+        $('select').material_select();
+        $('.datepicker').pickadate({
+            selectMonths: true, // Creates a dropdown to control month
+            selectYears: 15, // Creates a dropdown of 15 years to control year,
+            format: 'yyyy-mm-dd'
+        });
+    }
+</script>
+</body>
+</html>

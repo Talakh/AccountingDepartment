@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<div style="margin-left: 50px; margin-top: 50px;">
+    <p style="text-align: center; font-size: 1.5em; font-weight: bold; margin-top: 50px;">ВІДОМІСТЬ
+        ЗАТРАЧЕНИХ
+        КОШТІВ</p>
+    <p th:text="'ПІП відрядженого: '+${travelAllowance.user.lastName}+ ' ' + ${travelAllowance.user.firstName} +' '+ ${travelAllowance.user.middleName}"></p>
+    <p th:text="'Витрачена сума за проїзд: ' + ${prepaymentReport.fare} + ' грн.'"></p>
+    <p th:text="'Резервування місць: ' + ${prepaymentReport.seatReservation} + ' грн.'"></p>
+    <p th:text="'Проживання в готелі: ' + ${prepaymentReport.hotelAccommodation}+ ' грн.'"></p>
+    <p th:text="'Телефонні переговори: ' + ${prepaymentReport.telephoneConversations}+ ' грн.'"></p>
+    <p th:text="'Сума суточних: ' + ${prepaymentReport.sumPerDiems}+ ' грн.'"></p>
+    <p th:text="'Всього сума: ' + ${sum}+' грн.'"></p>
+    <hr style="margin-right: 50px;">
+    <p th:text="'Дата: ' + ${prepaymentReport.preparationDate}"
+       style="display: inline-block; float: left;"></p>
+    <p style="margin-left: 400px; margin-top: 20px;">Підпис відрядженого ____________</p>
+    <br>
+</div>
+</div>
+<script type="text/javascript">
+    <!--
+    window.print();
+    //-->
+</script>
+</body>
+</html>

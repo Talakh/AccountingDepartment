@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
+    <title>Авансовий звіт</title>
+
+
+    <link th:href="@{/css/material_icons.css}" type="text/css" rel="stylesheet" media="screen,projection"/>
+    <link th:href="@{/css/materialize.css}" type="text/css" rel="stylesheet" media="screen,projection"/>
+    <link th:href="@{/css/style.css}" type="text/css" rel="stylesheet" media="screen,projection"/>
+</head>
+<body>
+<nav th:replace="elements/header :: header"></nav>
+<br>
+<div class="container">
+    <div class="row">
+        <form action="#" th:action="@{/user/savePrepaymentReport}" th:object="${prepaymentReport}" method="post"
+              class="col s12">
+            <input type="hidden" th:field="*{id}">
+            <input type="hidden" th:field="*{travelAllowance}">
+            <input type="hidden" th:field="*{preparationDate}">
+            <div id="authors_block">
+                <div class=" author row">
+                    <div class="input-field col s4">
+                        <input th:field="*{fare}" placeholder="Сума за проїзд" id="fareSum" type="number"
+                               class="validate" required>
+                        <label for="fareSum">Сума за проїзд</label>
+                    </div>
+                    <div class="input-field col s4">
+                        <input th:field="*{seatReservation}" placeholder="Резервування місць" id="seatReservationSum" type="number"
+                               class="validate" required>
+                        <label for="seatReservationSum">Резервування місць</label>
+                    </div>
+                    <div class="input-field col s4">
+                        <input th:field="*{hotelAccommodation}" placeholder="Проживання в готелі" id="hotelAccommodationSum" type="number"
+                               class="validate" required>
+                        <label for="hotelAccommodationSum">Проживання в готелі</label>
+                    </div>
+                    <div class="input-field col s4">
+                        <input th:field="*{telephoneConversations}" placeholder="Телефонні переговори" id="telephoneConversationsSum" type="number"
+                               class="validate" required>
+                        <label for="telephoneConversationsSum">Телефонні переговори</label>
+                    </div>
+                    <div class="input-field col s4">
+                        <input th:field="*{sumPerDiems}" placeholder="Сума добових" id="sumPerDiems" type="number"
+                               class="validate" required>
+                        <label for="sumPerDiems">Сума добових</label>
+                    </div>
+                </div>
+            </div>
+            <br><br>
+            <br>
+            <div th:switch="${edit}">
+                <button th:case="false" class="btn waves-effect waves-light indigo " type="submit" name="action">Створити звіт
+                    <i class="material-icons right">send</i>
+                </button>
+                <button th:case="true" class="btn waves-effect waves-light indigo " type="submit" name="action">Зберегти зміни
+                    <i class="material-icons right">send</i>
+                </button>
+            </div>
+        </form>
+    </div>
+    <br><br>
+
+    <div class="section">
+
+    </div>
+</div>
+
+
+<!--  Scripts-->
+
+
+<script type="text/javascript" th:inline="javascript" th:src="@{/js/jquery-2.1.1.js}"></script>
+<script type="text/javascript" th:inline="javascript" th:src="@{/js/materialize.js}"></script>
+<script type="text/javascript" th:inline="javascript" th:src="@{/js/init.js}"></script>
+<script type="text/javascript" th:inline="javascript" th:src="@{/js/main.js}"></script>
+<script>
+
+    $(document).ready()
+    {
+        $('select').material_select();
+        $('.datepicker').pickadate({
+            selectMonths: true, // Creates a dropdown to control month
+            selectYears: 15, // Creates a dropdown of 15 years to control year
+            format: 'yyyy-mm-dd'
+        });
+    }
+</script>
+</body>
+</html>

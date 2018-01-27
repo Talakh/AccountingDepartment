@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>Авансові звіти</title>
+    <link th:href="@{/css/material_icons.css}" type="text/css" rel="stylesheet" media="screen,projection"/>
+    <link th:href="@{/css/materialize.css}" type="text/css" rel="stylesheet" media="screen,projection"/>
+    <link th:href="@{/css/style.css}" type="text/css" rel="stylesheet" media="screen,projection"/>
+    <script>
+        function date() {
+            var date = document.getElementById("businessTripEndDate").value;
+            if (date !== "") {
+                document.getElementById("filter").href = "/admin/prepaymentReports?date=" + date;
+            }
+            else {
+                document.getElementById("filter").href = "/admin/prepaymentReports";
+            }
+        }
+
+        function print() {
+            var location = document.location.href;
+            document.getElementById("print").href = location.split("?")[0] + "/print?" + location.split("?")[1];
+        }
+
+    </script>
+</head>
+<body>
+<nav th:replace="elements/header::header"></nav>
+<div class="input-field row" style="padding-left: 40%;">
+    <input placeholder="Місяць фільтрації" id="businessTripEndDate"
+           type="date"
+           class="validate autocomplete datepicker col s3">
+    <a href="#" id="filter" class="btn waves-effect indigo"
+       style="position: relative; left: 5px; z-index: 0;"
+       onclick="date()">Фільтр</a>
+    <a href="#" id="print" class="btn waves-effect indigo"
+       style="position: relative; left: 20px; z-index: 0;"
+       onclick="print()">Зберегти</a>
+</div>
+<table class="table table-striped table-dark">
+    <thead>
+    <tr>
+        <th scope="col">№</th>
+        <th scope="col">Сума за проїзд</th>
+        <th scope="col">Резервування місць</th>
+        <th scope="col">Проживання в готелі</th>
+        <th scope="col">Телефонні розмови</th>
+        <th scope="col">Сума проживання за кількість днів</th>
+        <th scope="col">Дата</th>
+    </tr>
+    </thead>
+    <tbody th:each="prepaymentReport : ${prepaymentReports}">
+    <tr>
+        <th scope="row" th:text="${prepaymentReport.id}"></th>
+        <td th:text="${prepaymentReport.fare}"></td>
+        <td th:text="${prepaymentReport.seatReservation}"></td>
+        <td th:text="${prepaymentReport.hotelAccommodation}"></td>
+        <td th:text="${prepaymentReport.telephoneConversations}"></td>
+        <td th:text="${prepaymentReport.sumPerDiems}"></td>
+        <td th:text="${prepaymentReport.preparationDate}"></td>
+        <td><a th:href="'/user/travelAllowance/' + ${prepaymentReport.travelAllowance.id}"
+               class="btn waves-effect indigo">Перейти до відрядження</a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<footer th:replace="elements/footer :: footer"></footer>
+<script type="text/javascript" th:inline="javascript" th:src="@{/js/jquery-2.1.1.js}"></script>
+<script type="text/javascript" th:inline="javascript" th:src="@{/js/materialize.js}"></script>
+<script type="text/javascript" th:inline="javascript" th:src="@{/js/init.js}"></script>
+<script type="text/javascript" th:inline="javascript" th:src="@{/js/main.js}"></script>
+<script>
+    $(document).ready()
+    {
+        $('select').material_select();
+        $('.datepicker').pickadate({
+            selectMonths: true, // Creates a dropdown to control month
+            selectYears: 15, // Creates a dropdown of 15 years to control year,
+            format: 'yyyy-mm-dd'
+        });
+    }
+</script>
+</body>
+</html>

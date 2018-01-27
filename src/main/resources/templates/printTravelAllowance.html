@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<div style="background-color: white;">
+    <div style="display: inline-block; float: left; margin-right: 30px; height: 300px;">
+        <img src="/images/emblem.png" alt="" style="margin-top: 100px;">
+    </div>
+    <div style="margin-left: 150px; margin-top: 50px;">
+        <p style="text-align: center; font-size: 1.5em; font-weight: bold; margin-top: 50px;">ПОСВІДЧЕННЯ ПРО
+            ВІДРЯДЖЕННЯ</p>
+        <p th:text="'Видано: '+${travelAllowance.user.lastName}+ ' ' + ${travelAllowance.user.firstName} +' '+ ${travelAllowance.user.middleName}"></p>
+        <p th:text="'Відділ: ' + ${travelAllowance.user.department.name}"></p>
+        <p th:text="'Посада: ' + ${travelAllowance.user.position.name}"></p>
+        <p th:text="'Відрядженому до: ' + ${travelAllowance.city.name}"></p>
+        <p th:text="'Строк відрядження з ' + ${travelAllowance.businessTripStartDate} + ' по ' + ${travelAllowance.businessTripEndDate}"></p>
+        <hr>
+        <p th:text="'Дата '+ ${travelAllowance.dateOfIssue}"
+           style="display: inline-block; float: left;"></p>
+        <p style="margin-left: 400px; margin-top: 20px;">Підпис ____________</p>
+        <br>
+    </div>
+</div>
+<script type="text/javascript">
+    <!--
+    window.print();
+    //-->
+</script>
+</body>
+</html>

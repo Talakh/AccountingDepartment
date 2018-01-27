@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<div>
+    <div style="background-color: white;">
+        <div style="margin-left: 50px; margin-top: 50px;">
+            <p style="text-align: center; font-size: 1.5em; font-weight: bold; margin-top: 50px;">ВИДАТКОВИЙ КАСОВИЙ
+                ОРДЕР</p>
+            <p th:text="'Видати: '+${travelAllowance.user.lastName}+ ' ' + ${travelAllowance.user.firstName} +' '+ ${travelAllowance.user.middleName}"></p>
+            <p th:text="'Сума: ' + ${cashOrder.sum} + ' грн.'"></p>
+            <hr style="margin-right: 50px;"/>
+            <p th:text="'Дата '+ ${cashOrder.dateReceiptOfMoney}"
+               style="display: inline-block; float: left;"></p>
+            <p style="margin-left: 400px; margin-top: 20px;">Головний бухгалер ____________</p>
+            <p style="margin-left: 400px; margin-top: 20px;">Підпис одержувача ____________</p>
+            <br>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    <!--
+    window.print();
+    //-->
+</script>
+</body>
+</html>

@@ -33,9 +33,9 @@
                 }
             }
         }
-        function save() {
+        function pdf() {
             var location = document.location.href;
-            document.getElementById("save").href = location.split("?")[0] +"/save?" + location.split("?")[1];
+            document.getElementById("pdf").href = location.split("?")[0] +"/pdf?" + location.split("?")[1];
         }
     </script>
 </head>
@@ -63,9 +63,9 @@
     <a href="#" id="filter" class="btn waves-effect indigo col s1"
        style="position: relative; top: 15px;left: 35px; z-index: 0;"
        onclick="filter()">Фільтр</a>
-    <a href="#" id="save" class="btn waves-effect indigo col s1" target="_blank"
+    <a href="#" id="pdf" class="btn waves-effect indigo col s1" target="_blank"
        style="position: relative; top: 15px;left: 50px; z-index: 0;"
-       onclick="save()">Зберегти</a>
+       onclick="pdf()">Зберегти</a>
 </div>
 <table class="table table-striped table-dark">
     <thead>

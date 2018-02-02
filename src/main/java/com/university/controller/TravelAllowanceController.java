@@ -2,7 +2,13 @@ package com.university.controller;
 
 import com.university.entities.*;
 import com.university.services.*;
+import com.university.view.pdf.TravelAllowancePdfReport;
+import com.university.view.pdf.UserPdfReport;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -11,12 +17,10 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.io.ByteArrayInputStream;
 import java.text.ParseException;
 import java.time.temporal.ChronoUnit;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Controller
@@ -85,13 +89,23 @@ public class TravelAllowanceController {
     }
 
     //edit
-    @GetMapping("/admin/travelAllowances/save")
-    public String printListTravelAllowances(@RequestParam(required = false, defaultValue = "-1") int department,
-                                            @RequestParam(required = false, defaultValue = "-1") int position,
-                                            @RequestParam(required = false, defaultValue = "0-0-0") String date,
-                                            Model model) {
-        model.addAttribute("travelAllowances", travelAllowanceService.getAllTravelAllowances(department, position, date));
-        return "travelAllowancesPrint";
+    @GetMapping(value = "/admin/travelAllowances/pdf", produces = MediaType.APPLICATION_PDF_VALUE)
+    public ResponseEntity<InputStreamResource> printTravelAllowanceList(
+            @RequestParam(required = false, defaultValue = "-1") int department,
+            @RequestParam(required = false, defaultValue = "-1") int position,
+            @RequestParam(required = false, defaultValue = "0-0-0") String date) {
+        List<TravelAllowance> travelAllowanceList = travelAllowanceService.getAllTravelAllowances(department, position, date);
+
+        ByteArrayInputStream bis = new TravelAllowancePdfReport().getReport(travelAllowanceList);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Disposition", "inline; filename=travelAllowancesReport.pdf");
+
+        return ResponseEntity
+                .ok()
+                .headers(headers)
+                .contentType(MediaType.APPLICATION_PDF)
+                .body(new InputStreamResource(bis));
     }
 
     @GetMapping("/admin/addTravelAllowance")

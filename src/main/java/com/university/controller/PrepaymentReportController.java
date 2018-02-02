@@ -4,8 +4,14 @@ import com.university.entities.PrepaymentReport;
 import com.university.entities.TravelAllowance;
 import com.university.services.PrepaymentReportService;
 import com.university.services.UserService;
+import com.university.view.pdf.PrepaymentReportPdfReport;
+import com.university.view.pdf.UserPdfReport;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -14,7 +20,9 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.io.ByteArrayInputStream;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -85,10 +93,20 @@ public class PrepaymentReportController {
         return "prepaymentReports";
     }
 
-    @GetMapping("/admin/prepaymentReports/print")
-    public String printPrepaymentReports(@RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date,
-                                         Model model) {
-        model.addAttribute("prepaymentReports", prepaymentReportService.getPrepaymentReportsByDate(Optional.ofNullable(date)));
-        return "prepaymentReportsPrint";
+    @GetMapping(value = "/admin/prepaymentReports/pdf", produces = MediaType.APPLICATION_PDF_VALUE)
+    public ResponseEntity<InputStreamResource> printPrepaymentReports(
+            @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date) {
+        List<PrepaymentReport> reportList =  prepaymentReportService.getPrepaymentReportsByDate(Optional.ofNullable(date));
+
+        ByteArrayInputStream bis = new PrepaymentReportPdfReport().getReport(reportList);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Disposition", "inline; filename=prepaymentReport.pdf");
+
+        return ResponseEntity
+                .ok()
+                .headers(headers)
+                .contentType(MediaType.APPLICATION_PDF)
+                .body(new InputStreamResource(bis));
     }
 }

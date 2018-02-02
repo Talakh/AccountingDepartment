@@ -17,9 +17,9 @@
             }
         }
 
-        function print() {
+        function pdf() {
             var location = document.location.href;
-            document.getElementById("print").href = location.split("?")[0] + "/print?" + location.split("?")[1];
+            document.getElementById("pdf").href = location.split("?")[0] + "/pdf?" + location.split("?")[1];
         }
 
     </script>
@@ -33,9 +33,9 @@
     <a href="#" id="filter" class="btn waves-effect indigo"
        style="position: relative; left: 5px; z-index: 0;"
        onclick="date()">Фільтр</a>
-    <a href="#" id="print" class="btn waves-effect indigo"
+    <a href="#" id="pdf" class="btn waves-effect indigo" target="_blank"
        style="position: relative; left: 20px; z-index: 0;"
-       onclick="print()">Зберегти</a>
+       onclick="pdf()">Зберегти</a>
 </div>
 <table class="table table-striped table-dark">
     <thead>

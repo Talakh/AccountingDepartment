@@ -8,7 +8,7 @@
     <p style="text-align: center; font-size: 1.5em; font-weight: bold; margin-top: 50px;">ВІДОМІСТЬ
         ЗАТРАЧЕНИХ
         КОШТІВ</p>
-    <p th:text="'ПІП відрядженого: '+${travelAllowance.user.lastName}+ ' ' + ${travelAllowance.user.firstName} +' '+ ${travelAllowance.user.middleName}"></p>
+    <p th:text="'ПІП відрядженого: '+${travelAllowance.user.surname}+ ' ' + ${travelAllowance.user.firstName} +' '+ ${travelAllowance.user.patronymic}"></p>
     <p th:text="'Витрачена сума за проїзд: ' + ${prepaymentReport.fare} + ' грн.'"></p>
     <p th:text="'Резервування місць: ' + ${prepaymentReport.seatReservation} + ' грн.'"></p>
     <p th:text="'Проживання в готелі: ' + ${prepaymentReport.hotelAccommodation}+ ' грн.'"></p>

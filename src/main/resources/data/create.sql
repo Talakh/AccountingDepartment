@@ -49,8 +49,8 @@ CREATE TABLE department_position (
 CREATE TABLE user (
   Id            INT          NOT NULL AUTO_INCREMENT,
   FirstName     VARCHAR(45)  NOT NULL,
-  MiddleName    VARCHAR(45)  NOT NULL,
-  LastName      VARCHAR(45)  NOT NULL,
+  Patronymic    VARCHAR(45)  NOT NULL,
+  Surname      VARCHAR(45)  NOT NULL,
   Password      VARCHAR(255) NOT NULL,
   Email         VARCHAR(255) NOT NULL,
   Enabled       BOOLEAN      NOT NULL,

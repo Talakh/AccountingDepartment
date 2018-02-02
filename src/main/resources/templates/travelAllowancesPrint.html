@@ -28,7 +28,7 @@
     <tbody th:each="travelAllowance : ${travelAllowances}">
     <tr>
         <th scope="row" th:text="${travelAllowance.id}"></th>
-        <td th:text="${travelAllowance.user.lastName}+ ' ' + ${travelAllowance.user.firstName} +' '+ ${travelAllowance.user.middleName}"></td>
+        <td th:text="${travelAllowance.user.surname}+ ' ' + ${travelAllowance.user.firstName} +' '+ ${travelAllowance.user.patronymic}"></td>
         <td th:text="${travelAllowance.dateOfIssue}"></td>
         <td th:text="${travelAllowance.businessTripStartDate}"></td>
         <td th:text="${travelAllowance.businessTripEndDate}"></td>

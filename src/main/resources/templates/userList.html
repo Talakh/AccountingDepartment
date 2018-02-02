@@ -69,9 +69,9 @@
     <tbody th:each="user : ${users}" style="overflow: scroll;">
     <tr>
         <th scope="row" th:text="${user.id}"></th>
-        <td th:text="${user.lastName}"></td>
+        <td th:text="${user.surname}"></td>
         <td th:text="${user.firstName}"></td>
-        <td th:text="${user.middleName}"></td>
+        <td th:text="${user.patronymic}"></td>
         <td th:text="${user.department.name}"></td>
         <td th:text="${user.position.name}"></td>
         <td><a th:href="'/user/' + ${user.id}" class="btn waves-effect indigo" style="z-index: 0;">Перейти</a></td>

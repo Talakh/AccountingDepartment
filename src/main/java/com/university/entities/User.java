@@ -5,10 +5,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 @Entity
 @Table(name = "user")
@@ -22,11 +19,11 @@ public class User implements UserDetails {
     @Column(name = "FirstName", nullable = false)
     private String firstName;
 
-    @Column(name = "MiddleName", nullable = false)
-    private String middleName;
+    @Column(name = "Patronymic", nullable = false)
+    private String patronymic;
 
-    @Column(name = "LastName", nullable = false)
-    private String lastName;
+    @Column(name = "Surname", nullable = false)
+    private String surname;
 
     @Column(name = "Password", nullable = false)
     private String password;
@@ -73,20 +70,20 @@ public class User implements UserDetails {
         this.firstName = firstName;
     }
 
-    public String getMiddleName() {
-        return middleName;
+    public String getPatronymic() {
+        return patronymic;
     }
 
-    public void setMiddleName(String middleName) {
-        this.middleName = middleName;
+    public void setPatronymic(String middleName) {
+        this.patronymic = middleName;
     }
 
-    public String getLastName() {
-        return lastName;
+    public String getSurname() {
+        return surname;
     }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public void setSurname(String lastName) {
+        this.surname = lastName;
     }
 
     public String getEmail() {
@@ -190,30 +187,23 @@ public class User implements UserDetails {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         User user = (User) o;
-
-        if (id != user.id) return false;
-        if (!firstName.equals(user.firstName)) return false;
-        if (!middleName.equals(user.middleName)) return false;
-        if (!lastName.equals(user.lastName)) return false;
-        if (!password.equals(user.password)) return false;
-        if (!email.equals(user.email)) return false;
-        if (!department.equals(user.department)) return false;
-        return position.equals(user.position);
+        return id == user.id &&
+                Objects.equals(firstName, user.firstName) &&
+                Objects.equals(patronymic, user.patronymic) &&
+                Objects.equals(surname, user.surname) &&
+                Objects.equals(password, user.password) &&
+                Objects.equals(email, user.email) &&
+                Objects.equals(travelAllowances, user.travelAllowances) &&
+                Objects.equals(department, user.department) &&
+                Objects.equals(position, user.position) &&
+                Objects.equals(role, user.role);
     }
 
     @Override
     public int hashCode() {
-        int result = id;
-        result = 31 * result + firstName.hashCode();
-        result = 31 * result + middleName.hashCode();
-        result = 31 * result + lastName.hashCode();
-        result = 31 * result + password.hashCode();
-        result = 31 * result + email.hashCode();
-        result = 31 * result + department.hashCode();
-        result = 31 * result + position.hashCode();
-        return result;
+
+        return Objects.hash(id, firstName, patronymic, surname, password, email, travelAllowances, department, position, role);
     }
 
     @Override
@@ -221,11 +211,16 @@ public class User implements UserDetails {
         return "User{" +
                 "id=" + id +
                 ", firstName='" + firstName + '\'' +
-                ", middleName='" + middleName + '\'' +
-                ", lastName='" + lastName + '\'' +
+                ", patronymic='" + patronymic + '\'' +
+                ", surname='" + surname + '\'' +
+                ", password='" + password + '\'' +
                 ", email='" + email + '\'' +
+                ", travelAllowances=" + travelAllowances +
+                ", cashOrders=" + cashOrders +
                 ", department=" + department +
                 ", position=" + position +
+                ", enabled=" + enabled +
+                ", role='" + role + '\'' +
                 '}';
     }
 }

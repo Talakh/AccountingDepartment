@@ -24,7 +24,7 @@
         <div style="margin-left: 150px; margin-top: 50px;">
             <p style="text-align: center; font-size: 1.5em; font-weight: bold; margin-top: 50px;">ПОСВІДЧЕННЯ ПРО
                 ВІДРЯДЖЕННЯ</p>
-            <p th:text="'Видано: '+${travelAllowance.user.lastName}+ ' ' + ${travelAllowance.user.firstName} +' '+ ${travelAllowance.user.middleName}"></p>
+            <p th:text="'Видано: '+${travelAllowance.user.surname}+ ' ' + ${travelAllowance.user.firstName} +' '+ ${travelAllowance.user.patronymic}"></p>
             <p th:text="'Відділ: ' + ${travelAllowance.user.department.name}"></p>
             <p th:text="'Посада: ' + ${travelAllowance.user.position.name}"></p>
             <p th:text="'Відрядженому до: ' + ${travelAllowance.city.name}"></p>
@@ -54,7 +54,7 @@
         <div style="margin-left: 50px; margin-top: 50px;">
             <p style="text-align: center; font-size: 1.5em; font-weight: bold; margin-top: 50px;">ВИДАТКОВИЙ КАСОВИЙ
                 ОРДЕР</p>
-            <p th:text="'Видати: '+${travelAllowance.user.lastName}+ ' ' + ${travelAllowance.user.firstName} +' '+ ${travelAllowance.user.middleName}"></p>
+            <p th:text="'Видати: '+${travelAllowance.user.surname}+ ' ' + ${travelAllowance.user.firstName} +' '+ ${travelAllowance.user.patronymic}"></p>
             <p th:text="'Сума: ' + ${cashOrder.sum} + ' грн.'"></p>
             <hr style="margin-right: 50px;"/>
             <p th:text="'Дата '+ ${cashOrder.dateReceiptOfMoney}"
@@ -79,7 +79,7 @@
                 <p style="text-align: center; font-size: 1.5em; font-weight: bold; margin-top: 50px;">ВІДОМІСТЬ
                     ЗАТРАЧЕНИХ
                     КОШТІВ</p>
-                <p th:text="'ПІП відрядженого: '+${travelAllowance.user.lastName}+ ' ' + ${travelAllowance.user.firstName} +' '+ ${travelAllowance.user.middleName}"></p>
+                <p th:text="'ПІП відрядженого: '+${travelAllowance.user.surname}+ ' ' + ${travelAllowance.user.firstName} +' '+ ${travelAllowance.user.patronymic}"></p>
                 <p th:text="'Витрачена сума за проїзд: ' + ${prepaymentReport.fare} + ' грн.'"></p>
                 <p th:text="'Резервування місць: ' + ${prepaymentReport.seatReservation} + ' грн.'"></p>
                 <p th:text="'Проживання в готелі: ' + ${prepaymentReport.hotelAccommodation}+ ' грн.'"></p>

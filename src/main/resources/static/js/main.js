@@ -1,6 +1,3 @@
-/**
- * Created by dimon on 26.09.2016.
- */
 var authorsCount = 1;
 
 $(document).ready(function () {

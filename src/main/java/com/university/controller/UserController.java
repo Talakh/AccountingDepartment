@@ -5,8 +5,13 @@ import com.university.entities.Department;
 import com.university.entities.Position;
 import com.university.entities.User;
 import com.university.services.*;
+import com.university.view.pdf.UserPdfReport;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -27,6 +32,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -80,7 +86,7 @@ public class UserController {
         try {
             byte[] bytes = file.getBytes();
             Path path = Paths.get("src/main/resources/static/images/" +
-                    user.getFirstName() + user.getLastName() + user.getMiddleName() + user.getId() + ".png");
+                    user.getFirstName() + user.getSurname() + user.getPatronymic() + user.getId() + ".png");
             Files.write(path, bytes);
             redirectAttributes.addFlashAttribute("message",
                     "You successfully uploaded '" + file.getOriginalFilename() + "'");
@@ -103,12 +109,21 @@ public class UserController {
         return "userList";
     }
 
-    @GetMapping("/admin/users/print")
-    public String printUsers(@RequestParam(required = false) Department department,
-                             @RequestParam(required = false) Position position,
-                             Model model) {
-        model.addAttribute("users", userService.getUsersByFilter(Optional.ofNullable(department), Optional.ofNullable(position)));
-        return "userListPrint";
+    @GetMapping(value = "/admin/users/pdf", produces = MediaType.APPLICATION_PDF_VALUE)
+    public ResponseEntity<InputStreamResource> printUsers(@RequestParam(required = false) Department department,
+                                                          @RequestParam(required = false) Position position) {
+        List<User> users = userService.getUsersByFilter(Optional.ofNullable(department), Optional.ofNullable(position));
+
+        ByteArrayInputStream bis = new UserPdfReport().getReport(users);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Disposition", "inline; filename=usersReport.pdf");
+
+        return ResponseEntity
+                .ok()
+                .headers(headers)
+                .contentType(MediaType.APPLICATION_PDF)
+                .body(new InputStreamResource(bis));
     }
 
     @GetMapping("/admin/addUser")

@@ -4,7 +4,10 @@ import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
 import com.university.entities.Department;
 import com.university.entities.Position;
 import com.university.entities.User;
-import com.university.services.*;
+import com.university.services.DepartmentService;
+import com.university.services.PositionService;
+import com.university.services.TravelAllowanceService;
+import com.university.services.UserService;
 import com.university.view.pdf.UserPdfReport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
@@ -20,7 +23,6 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.imageio.ImageIO;
 import javax.validation.Valid;
@@ -76,10 +78,8 @@ public class UserController {
 
     @PostMapping("/user/editImageForUser")
     public String editImageForUser(@RequestParam("userId") User user,
-                                   @RequestParam("file") MultipartFile file,
-                                   RedirectAttributes redirectAttributes) {
+                                   @RequestParam("file") MultipartFile file) {
         if (file.isEmpty()) {
-            redirectAttributes.addFlashAttribute("message", "Please select a file to upload");
             return "redirect:/user/" + user.getId();
         }
 
@@ -88,8 +88,6 @@ public class UserController {
             Path path = Paths.get("src/main/resources/static/images/" +
                     user.getFirstName() + user.getSurname() + user.getPatronymic() + user.getId() + ".png");
             Files.write(path, bytes);
-            redirectAttributes.addFlashAttribute("message",
-                    "You successfully uploaded '" + file.getOriginalFilename() + "'");
             user.setImage(Files.readAllBytes(path));
             Files.delete(path);
             userService.saveUser(user, true);
@@ -110,8 +108,8 @@ public class UserController {
     }
 
     @GetMapping(value = "/admin/users/pdf", produces = MediaType.APPLICATION_PDF_VALUE)
-    public ResponseEntity<InputStreamResource> printUsers(@RequestParam(required = false) Department department,
-                                                          @RequestParam(required = false) Position position) {
+    public ResponseEntity<InputStreamResource> getPdfUserList(@RequestParam(required = false) Department department,
+                                                              @RequestParam(required = false) Position position) {
         List<User> users = userService.getUsersByFilter(Optional.ofNullable(department), Optional.ofNullable(position));
 
         ByteArrayInputStream bis = new UserPdfReport().getReport(users);
@@ -153,7 +151,6 @@ public class UserController {
                 Path path = Paths.get("src/main/resources/static/images/co-worker.png");
                 user.setImage(Files.readAllBytes(path));
             }
-
             user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
             userService.saveUser(user, edit);
             return "redirect:/user/" + user.getId();

@@ -5,7 +5,6 @@ import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.university.entities.TravelAllowance;
-import com.university.entities.User;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;

@@ -1,6 +1,7 @@
 package com.university.services.impl;
 
 import com.university.entities.CashOrder;
+import com.university.entities.TravelAllowance;
 import com.university.repositories.CashOrderRepository;
 import com.university.services.CashOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +40,11 @@ public class CashOrderServiceImpl implements CashOrderService {
     @Override
     public void removeCashOrderByTravelAllowance_Id(Integer travelAllowanceId) {
         cashOrderRepository.removeCashOrderByTravelAllowance_Id(travelAllowanceId);
+    }
+
+    @Override
+    public boolean isCashOrderExistByTravelAllowance(TravelAllowance travelAllowance) {
+        return cashOrderRepository.existsByTravelAllowance(travelAllowance);
     }
 
 }

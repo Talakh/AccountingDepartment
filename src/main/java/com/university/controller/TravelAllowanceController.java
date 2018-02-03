@@ -3,7 +3,6 @@ package com.university.controller;
 import com.university.entities.*;
 import com.university.services.*;
 import com.university.view.pdf.TravelAllowancePdfReport;
-import com.university.view.pdf.UserPdfReport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
@@ -18,7 +17,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.io.ByteArrayInputStream;
-import java.text.ParseException;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -58,13 +56,13 @@ public class TravelAllowanceController {
     @GetMapping("/user/travelAllowance/{travelAllowanceId}")
     public String getTravelAllowance(@PathVariable("travelAllowanceId") TravelAllowance travelAllowance, Model model) {
         PrepaymentReport prepaymentReport = travelAllowance.getPrepaymentReport();
-        boolean isPrepaymentReportExist = false;
         if (prepaymentReport != null) {
-            isPrepaymentReportExist = true;
+            model.addAttribute("isPrepaymentReportExist", true);
             model.addAttribute("sum", prepaymentReport.getFullPrepaymentReportSum());
             model.addAttribute("prepaymentReport", prepaymentReport);
+        } else {
+            model.addAttribute("isPrepaymentReportExist", false);
         }
-        model.addAttribute("isPrepaymentReportExist", isPrepaymentReportExist);
         model.addAttribute("travelAllowance", travelAllowance);
         model.addAttribute("cashOrder", travelAllowance.getCashOrder());
         return "travelAllowance";
@@ -78,7 +76,7 @@ public class TravelAllowanceController {
 
     //edit
     @GetMapping("/admin/travelAllowances")
-    public String getAllTravelAllowances(@RequestParam(required = false, defaultValue = "-1") int department,
+    public String getTravelAllowanceList(@RequestParam(required = false, defaultValue = "-1") int department,
                                          @RequestParam(required = false, defaultValue = "-1") int position,
                                          @RequestParam(required = false, defaultValue = "0-0-0") String date,
                                          Model model) {
@@ -90,7 +88,7 @@ public class TravelAllowanceController {
 
     //edit
     @GetMapping(value = "/admin/travelAllowances/pdf", produces = MediaType.APPLICATION_PDF_VALUE)
-    public ResponseEntity<InputStreamResource> printTravelAllowanceList(
+    public ResponseEntity<InputStreamResource> getPdfTravelAllowanceList(
             @RequestParam(required = false, defaultValue = "-1") int department,
             @RequestParam(required = false, defaultValue = "-1") int position,
             @RequestParam(required = false, defaultValue = "0-0-0") String date) {
@@ -109,8 +107,7 @@ public class TravelAllowanceController {
     }
 
     @GetMapping("/admin/addTravelAllowance")
-    public String addTravelAllowance(@RequestParam("userId") User user,
-                                     Model model) {
+    public String addTravelAllowance(@RequestParam("userId") User user, Model model) {
         TravelAllowance travelAllowance = new TravelAllowance();
         travelAllowance.setUser(user);
         model.addAttribute("travelAllowance", travelAllowance);
@@ -127,9 +124,8 @@ public class TravelAllowanceController {
         return "addTravelAllowance";
     }
 
-    //edit
     @PostMapping("/admin/saveTravelAllowance")
-    public String saveTravelAllowance(@Valid TravelAllowance travelAllowance, BindingResult bindingResult) throws ParseException {
+    public String saveTravelAllowance(@Valid TravelAllowance travelAllowance, BindingResult bindingResult) {
         if (bindingResult.hasErrors()
                 || travelAllowance.getDateOfIssue() == null
                 || travelAllowance.getBusinessTripStartDate() == null
@@ -138,12 +134,11 @@ public class TravelAllowanceController {
                 || travelAllowance.getBusinessTripStartDate().isAfter(travelAllowance.getBusinessTripEndDate())) {
             return "redirect:/admin/addTravelAllowance?userId=" + travelAllowance.getUser().getId();
         } else {
-            if (cashOrderService.findCashOrderByTravelAllowance_Id(travelAllowance.getId()) != null) {
+            if (cashOrderService.isCashOrderExistByTravelAllowance(travelAllowance)) {
                 cashOrderService.removeCashOrderByTravelAllowance_Id(travelAllowance.getId());
-            } else {
-                travelAllowanceService.saveTravelAllowance(travelAllowance);
-                saveCashOrderForTravelAllowance(travelAllowance);
             }
+            travelAllowanceService.saveTravelAllowance(travelAllowance);
+            saveCashOrderForTravelAllowance(travelAllowance);
         }
 
         return "redirect:/user/travelAllowance/" + travelAllowance.getId();

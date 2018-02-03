@@ -5,7 +5,6 @@ import com.university.entities.TravelAllowance;
 import com.university.services.PrepaymentReportService;
 import com.university.services.UserService;
 import com.university.view.pdf.PrepaymentReportPdfReport;
-import com.university.view.pdf.UserPdfReport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -73,7 +72,7 @@ public class PrepaymentReportController {
 
     @GetMapping("/user/deletePrepaymentReport/{prepaymentReportId}")
     public String deletePrepaymentReport(@PathVariable("prepaymentReportId") PrepaymentReport prepaymentReport) {
-        Integer travelAllowanceId = prepaymentReport.getTravelAllowance().getId();
+        int travelAllowanceId = prepaymentReport.getTravelAllowance().getId();
         prepaymentReportService.removePrepaymentReport(prepaymentReport.getId());
         return "redirect:/user/travelAllowance/" + travelAllowanceId;
     }
@@ -87,14 +86,14 @@ public class PrepaymentReportController {
     }
 
     @GetMapping("/admin/prepaymentReports")
-    public String getPrepaymentReports(@RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date,
+    public String getPrepaymentReportList(@RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date,
                                        Model model) {
         model.addAttribute("prepaymentReports", prepaymentReportService.getPrepaymentReportsByDate(Optional.ofNullable(date)));
         return "prepaymentReports";
     }
 
     @GetMapping(value = "/admin/prepaymentReports/pdf", produces = MediaType.APPLICATION_PDF_VALUE)
-    public ResponseEntity<InputStreamResource> printPrepaymentReports(
+    public ResponseEntity<InputStreamResource> getPdfPrepaymentReportList(
             @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date) {
         List<PrepaymentReport> reportList =  prepaymentReportService.getPrepaymentReportsByDate(Optional.ofNullable(date));
 

@@ -135,7 +135,6 @@ public class PrepaymentReport {
     public String toString() {
         return "PrepaymentReport{" +
                 "id=" + id +
-                ", travelAllowance=" + travelAllowance +
                 ", fare=" + fare +
                 ", seatReservation=" + seatReservation +
                 ", hotelAccommodation=" + hotelAccommodation +

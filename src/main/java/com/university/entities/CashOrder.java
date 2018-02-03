@@ -95,7 +95,6 @@ public class CashOrder {
                 ", sum=" + sum +
                 ", dateReceiptOfMoney=" + dateReceiptOfMoney +
                 ", user=" + user +
-                ", travelAllowance=" + travelAllowance +
                 '}';
     }
 }

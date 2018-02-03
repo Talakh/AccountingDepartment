@@ -134,8 +134,6 @@ public class TravelAllowance {
                 ", dateOfIssue=" + dateOfIssue +
                 ", city=" + city +
                 ", user=" + user +
-                ", cashOrder=" + cashOrder +
-                ", prepaymentReport=" + prepaymentReport +
                 ", businessTripStartDate=" + businessTripStartDate +
                 ", businessTripEndDate=" + businessTripEndDate +
                 '}';

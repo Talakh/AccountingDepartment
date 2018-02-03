@@ -125,7 +125,9 @@ public class TravelAllowanceController {
     }
 
     @PostMapping("/admin/saveTravelAllowance")
-    public String saveTravelAllowance(@Valid TravelAllowance travelAllowance, BindingResult bindingResult) {
+    public String saveTravelAllowance(@Valid TravelAllowance travelAllowance,
+                                      BindingResult bindingResult,
+                                      @RequestParam("editTravelAllowance") boolean editTravelAllowance) {
         if (bindingResult.hasErrors()
                 || travelAllowance.getDateOfIssue() == null
                 || travelAllowance.getBusinessTripStartDate() == null
@@ -134,13 +136,12 @@ public class TravelAllowanceController {
                 || travelAllowance.getBusinessTripStartDate().isAfter(travelAllowance.getBusinessTripEndDate())) {
             return "redirect:/admin/addTravelAllowance?userId=" + travelAllowance.getUser().getId();
         } else {
-            if (cashOrderService.isCashOrderExistByTravelAllowance(travelAllowance)) {
+            if (editTravelAllowance) {
                 cashOrderService.removeCashOrderByTravelAllowance_Id(travelAllowance.getId());
             }
             travelAllowanceService.saveTravelAllowance(travelAllowance);
             saveCashOrderForTravelAllowance(travelAllowance);
         }
-
         return "redirect:/user/travelAllowance/" + travelAllowance.getId();
     }
 

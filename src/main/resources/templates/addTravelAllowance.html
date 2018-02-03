@@ -18,6 +18,7 @@
               class="col s12">
             <input type="hidden" th:field="*{id}">
             <input type="hidden" th:field="*{user}">
+            <input name="editTravelAllowance" type="hidden" th:value="${editTravelAllowance}">
             <div id="authors_block">
                 <div class="author row">
                     <div class="input-field col s4">
@@ -66,7 +67,6 @@
     <div class="section">
     </div>
 </div>
-<!--  Scripts-->
 <script type="text/javascript" th:inline="javascript" th:src="@{/js/jquery-2.1.1.js}"></script>
 <script type="text/javascript" th:inline="javascript" th:src="@{/js/materialize.js}"></script>
 <script type="text/javascript" th:inline="javascript" th:src="@{/js/init.js}"></script>

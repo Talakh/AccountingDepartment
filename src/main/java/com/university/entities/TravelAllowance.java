@@ -4,6 +4,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.Objects;
 
 @Entity
 @Table(name = "travel_allowance")
@@ -97,30 +98,33 @@ public class TravelAllowance {
         this.businessTripStartDate = businessTripStartDate;
     }
 
+    public PrepaymentReport getPrepaymentReport() {
+        return prepaymentReport;
+    }
+
+    public void setPrepaymentReport(PrepaymentReport prepaymentReport) {
+        this.prepaymentReport = prepaymentReport;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         TravelAllowance that = (TravelAllowance) o;
-
-        if (id != that.id) return false;
-        if (!dateOfIssue.equals(that.dateOfIssue)) return false;
-        if (!city.equals(that.city)) return false;
-        if (!user.equals(that.user)) return false;
-        if (!businessTripStartDate.equals(that.businessTripStartDate)) return false;
-        return businessTripEndDate.equals(that.businessTripEndDate);
+        return Objects.equals(id, that.id) &&
+                Objects.equals(dateOfIssue, that.dateOfIssue) &&
+                Objects.equals(city, that.city) &&
+                Objects.equals(user, that.user) &&
+                Objects.equals(cashOrder, that.cashOrder) &&
+                Objects.equals(prepaymentReport, that.prepaymentReport) &&
+                Objects.equals(businessTripStartDate, that.businessTripStartDate) &&
+                Objects.equals(businessTripEndDate, that.businessTripEndDate);
     }
 
     @Override
     public int hashCode() {
-        int result = id;
-        result = 31 * result + dateOfIssue.hashCode();
-        result = 31 * result + city.hashCode();
-        result = 31 * result + user.hashCode();
-        result = 31 * result + businessTripStartDate.hashCode();
-        result = 31 * result + businessTripEndDate.hashCode();
-        return result;
+
+        return Objects.hash(id, dateOfIssue, city, user, cashOrder, prepaymentReport, businessTripStartDate, businessTripEndDate);
     }
 
     @Override
@@ -130,16 +134,10 @@ public class TravelAllowance {
                 ", dateOfIssue=" + dateOfIssue +
                 ", city=" + city +
                 ", user=" + user +
+                ", cashOrder=" + cashOrder +
+                ", prepaymentReport=" + prepaymentReport +
                 ", businessTripStartDate=" + businessTripStartDate +
                 ", businessTripEndDate=" + businessTripEndDate +
                 '}';
-    }
-
-    public PrepaymentReport getPrepaymentReport() {
-        return prepaymentReport;
-    }
-
-    public void setPrepaymentReport(PrepaymentReport prepaymentReport) {
-        this.prepaymentReport = prepaymentReport;
     }
 }

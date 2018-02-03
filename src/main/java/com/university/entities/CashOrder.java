@@ -5,6 +5,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.Calendar;
+import java.util.Objects;
 
 @Entity
 @Table(name = "cash_order")
@@ -74,27 +75,18 @@ public class CashOrder {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         CashOrder cashOrder = (CashOrder) o;
-
-        if (id != cashOrder.id) return false;
-        if (Double.compare(cashOrder.sum, sum) != 0) return false;
-        if (!dateReceiptOfMoney.equals(cashOrder.dateReceiptOfMoney)) return false;
-        if (!user.equals(cashOrder.user)) return false;
-        return travelAllowance.equals(cashOrder.travelAllowance);
+        return id == cashOrder.id &&
+                Double.compare(cashOrder.sum, sum) == 0 &&
+                Objects.equals(dateReceiptOfMoney, cashOrder.dateReceiptOfMoney) &&
+                Objects.equals(user, cashOrder.user) &&
+                Objects.equals(travelAllowance, cashOrder.travelAllowance);
     }
 
     @Override
     public int hashCode() {
-        int result;
-        long temp;
-        result = id;
-        temp = Double.doubleToLongBits(sum);
-        result = 31 * result + (int) (temp ^ (temp >>> 32));
-        result = 31 * result + dateReceiptOfMoney.hashCode();
-        result = 31 * result + user.hashCode();
-        result = 31 * result + travelAllowance.hashCode();
-        return result;
+
+        return Objects.hash(id, sum, dateReceiptOfMoney, user, travelAllowance);
     }
 
     @Override

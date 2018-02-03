@@ -1,6 +1,7 @@
 package com.university.entities;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @Table(name = "city")
@@ -57,25 +58,17 @@ public class City {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         City city = (City) o;
-
-        if (id != city.id) return false;
-        if (Double.compare(city.travelCost, travelCost) != 0) return false;
-        if (!name.equals(city.name)) return false;
-        return cityCategory.equals(city.cityCategory);
+        return id == city.id &&
+                Double.compare(city.travelCost, travelCost) == 0 &&
+                Objects.equals(name, city.name) &&
+                Objects.equals(cityCategory, city.cityCategory);
     }
 
     @Override
     public int hashCode() {
-        int result;
-        long temp;
-        result = id;
-        result = 31 * result + name.hashCode();
-        temp = Double.doubleToLongBits(travelCost);
-        result = 31 * result + (int) (temp ^ (temp >>> 32));
-        result = 31 * result + cityCategory.hashCode();
-        return result;
+
+        return Objects.hash(id, name, travelCost, cityCategory);
     }
 
     @Override

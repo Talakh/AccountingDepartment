@@ -3,6 +3,7 @@ package com.university.entities;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "department")
@@ -52,18 +53,16 @@ public class Department {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         Department that = (Department) o;
-
-        if (id != that.id) return false;
-        return name.equals(that.name);
+        return id == that.id &&
+                Objects.equals(name, that.name) &&
+                Objects.equals(positions, that.positions);
     }
 
     @Override
     public int hashCode() {
-        int result = id;
-        result = 31 * result + name.hashCode();
-        return result;
+
+        return Objects.hash(id, name, positions);
     }
 
     @Override
@@ -71,6 +70,7 @@ public class Department {
         return "Department{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
+                ", positions=" + positions +
                 '}';
     }
 }

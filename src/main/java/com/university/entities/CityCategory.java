@@ -1,6 +1,7 @@
 package com.university.entities;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @Table(name = "city_category")
@@ -45,23 +46,16 @@ public class CityCategory {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         CityCategory that = (CityCategory) o;
-
-        if (id != that.id) return false;
-        if (Double.compare(that.costPerDay, costPerDay) != 0) return false;
-        return name.equals(that.name);
+        return id == that.id &&
+                Double.compare(that.costPerDay, costPerDay) == 0 &&
+                Objects.equals(name, that.name);
     }
 
     @Override
     public int hashCode() {
-        int result;
-        long temp;
-        result = id;
-        result = 31 * result + name.hashCode();
-        temp = Double.doubleToLongBits(costPerDay);
-        result = 31 * result + (int) (temp ^ (temp >>> 32));
-        return result;
+
+        return Objects.hash(id, name, costPerDay);
     }
 
     @Override

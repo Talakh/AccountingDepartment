@@ -5,6 +5,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.Calendar;
+import java.util.Objects;
 
 @Entity
 @Table(name = "prepayment_report")
@@ -114,37 +115,21 @@ public class PrepaymentReport {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
-        PrepaymentReport that = (PrepaymentReport) o;
-
-        if (id != that.id) return false;
-        if (Double.compare(that.fare, fare) != 0) return false;
-        if (Double.compare(that.seatReservation, seatReservation) != 0) return false;
-        if (Double.compare(that.hotelAccommodation, hotelAccommodation) != 0) return false;
-        if (Double.compare(that.telephoneConversations, telephoneConversations) != 0) return false;
-        if (Double.compare(that.sumPerDiems, sumPerDiems) != 0) return false;
-        if (!travelAllowance.equals(that.travelAllowance)) return false;
-        return preparationDate.equals(that.preparationDate);
+        PrepaymentReport report = (PrepaymentReport) o;
+        return id == report.id &&
+                Double.compare(report.fare, fare) == 0 &&
+                Double.compare(report.seatReservation, seatReservation) == 0 &&
+                Double.compare(report.hotelAccommodation, hotelAccommodation) == 0 &&
+                Double.compare(report.telephoneConversations, telephoneConversations) == 0 &&
+                Double.compare(report.sumPerDiems, sumPerDiems) == 0 &&
+                Objects.equals(travelAllowance, report.travelAllowance) &&
+                Objects.equals(preparationDate, report.preparationDate);
     }
 
     @Override
     public int hashCode() {
-        int result;
-        long temp;
-        result = id;
-        result = 31 * result + travelAllowance.hashCode();
-        temp = Double.doubleToLongBits(fare);
-        result = 31 * result + (int) (temp ^ (temp >>> 32));
-        temp = Double.doubleToLongBits(seatReservation);
-        result = 31 * result + (int) (temp ^ (temp >>> 32));
-        temp = Double.doubleToLongBits(hotelAccommodation);
-        result = 31 * result + (int) (temp ^ (temp >>> 32));
-        temp = Double.doubleToLongBits(telephoneConversations);
-        result = 31 * result + (int) (temp ^ (temp >>> 32));
-        temp = Double.doubleToLongBits(sumPerDiems);
-        result = 31 * result + (int) (temp ^ (temp >>> 32));
-        result = 31 * result + preparationDate.hashCode();
-        return result;
+
+        return Objects.hash(id, travelAllowance, fare, seatReservation, hotelAccommodation, telephoneConversations, sumPerDiems, preparationDate);
     }
 
     @Override

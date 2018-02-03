@@ -1,6 +1,7 @@
 package com.university.entities;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @Table(name = "position")
@@ -34,18 +35,15 @@ public class Position {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         Position position = (Position) o;
-
-        if (id != position.id) return false;
-        return name.equals(position.name);
+        return id == position.id &&
+                Objects.equals(name, position.name);
     }
 
     @Override
     public int hashCode() {
-        int result = id;
-        result = 31 * result + name.hashCode();
-        return result;
+
+        return Objects.hash(id, name);
     }
 
     @Override
